@@ -7,7 +7,7 @@ import Menuoff from "../assets/MenuOff.PNG";
 const Header = () => {
   const dispatch = useDispatch();
   const menuCondition = useSelector((app) => app.navCard.navbutton);
-  console.log("Menu condition : " + menuCondition);
+//   console.log("Menu condition : " + menuCondition);
   const hendleMenuToggle = () => {
     dispatch(isOpen());
   };

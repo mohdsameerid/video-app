@@ -9,8 +9,11 @@ const navSlice = createSlice({
     isOpen: (state) => {
       state.navbutton = !state.navbutton;
     },
+    closeNavbar: (state) => {
+      state.navbutton = false;
+    },
   },
 });
 
-export const { isOpen } = navSlice.actions;
+export const { isOpen, closeNavbar } = navSlice.actions;
 export default navSlice.reducer;
