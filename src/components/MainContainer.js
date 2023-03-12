@@ -14,7 +14,7 @@ const MainContainer = () => {
     setData(videoData.items);
   };
   return (
-    <div className="flex flex-wrap justify-between px-5">
+    <div className="flex flex-wrap  px-5 pl-10">
       {data.map((videos) => (
         <VideoCard info={videos} />
       ))}

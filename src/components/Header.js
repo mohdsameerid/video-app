@@ -12,9 +12,9 @@ const Header = () => {
     dispatch(isOpen());
   };
   return (
-    <div className="shadow-lg">
-      <div className="grid grid-flow-col m-2 p-2">
-        <div className="flex col-span-2">
+    <div className="">
+      <div className="f m-2 p-3 flex justify-between">
+        <div className="flex ">
           <span className="">
             {menuCondition ? (
               <img
@@ -36,10 +36,10 @@ const Header = () => {
             <img className="h-10" alt="Wetube" src={logo}></img>
           </span>
         </div>
-        <div className="col-span-8 ">
+        <div className="mr-52">
           <span className="">
             <input
-              className="border-gray-400 bg-gray-50 w-1/2 p-2 rounded-l-2xl"
+              className="border-gray-400 bg-gray-50 w-[550px] p-2 rounded-l-2xl"
               type="text"
             />
             <button className="bg-gray-200 p-2 rounded-r-2xl text-white cursor-pointer">
@@ -47,7 +47,7 @@ const Header = () => {
             </button>
           </span>
         </div>
-        <div className="col-span-2">
+        <div className="">
           <span>
             {" "}
             <img

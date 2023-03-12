@@ -1,6 +1,5 @@
 import React from "react";
 
-
 const Subscribtion = () => (
   <div className="m-2 pt-2">
     <h1 className="font-bold">Subscribtion</h1>
@@ -35,9 +34,8 @@ const Shorts = () => (
   </div>
 );
 const SideContainer = () => {
-    
   return (
-    <div className="m-2 p-2 shadow-lg w-40">
+    <div className="m-2 p-2 shadow-lg pr-16">
       <Home />
       <Shorts />
       <Subscribtion />
