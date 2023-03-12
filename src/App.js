@@ -1,13 +1,14 @@
+import Header from "./components/Header";
+import Body from "./components/Body";
+import Footer from "./components/Footer";
+
 function App() {
   return (
-    <div className="App">
-      <div>
-        <span>Humburger</span>
-        <span>Wetube LOGO</span>
-      </div>
-      <span>Search Bar</span>
-      <span>User icon</span>
-    </div>
+    <>
+      <Header />
+      <Body />
+      <Footer />
+    </>
   );
 }
 
