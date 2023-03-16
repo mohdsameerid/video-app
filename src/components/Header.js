@@ -7,7 +7,7 @@ import Menuoff from "../assets/MenuOff.PNG";
 const Header = () => {
   const dispatch = useDispatch();
   const menuCondition = useSelector((app) => app.navCard.navbutton);
-//   console.log("Menu condition : " + menuCondition);
+  //   console.log("Menu condition : " + menuCondition);
   const hendleMenuToggle = () => {
     dispatch(isOpen());
   };
@@ -39,10 +39,10 @@ const Header = () => {
         <div className="mr-52">
           <span className="">
             <input
-              className="border-gray-400 bg-gray-50 w-[550px] p-2 rounded-l-2xl"
+              className="border-gray-400 bg-gray-100 w-[550px] p-2 rounded-l-2xl"
               type="text"
             />
-            <button className="bg-gray-200 p-2 rounded-r-2xl text-white cursor-pointer">
+            <button className="bg-gray-200 p-2 rounded-r-2xl text-white cursor-pointer w-16">
               🔍
             </button>
           </span>
