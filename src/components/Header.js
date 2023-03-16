@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.PNG";
 import { isOpen } from "../utils/navSlice";
 import Menuoff from "../assets/MenuOff.PNG";
+import { YOUTUBE_SEARCH_SUGGESTION_API } from "../config";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,29 @@ const Header = () => {
   const hendleMenuToggle = () => {
     dispatch(isOpen());
   };
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestionResult, setSuggestionResult] = useState([]);
+  // console.log(suggestionResult);
+  const [showHideSuggestion, setShowHideSuggestion] = useState(false);
+
+  useEffect(() => {
+    // console.log(searchQuery);
+    //API call after every 500 mili sec.
+    const timer = setTimeout(() => getSearchResult(), 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  const getSearchResult = async () => {
+    // console.log(searchQuery);
+    const data = await fetch(YOUTUBE_SEARCH_SUGGESTION_API + searchQuery);
+    const json = await data.json();
+    // console.log(json);
+    setSuggestionResult(json[1]);
+  };
+
   return (
     <div className="">
       <div className="f m-2 p-3 flex justify-between">
@@ -37,15 +61,33 @@ const Header = () => {
           </span>
         </div>
         <div className="mr-52">
-          <span className="">
+          <div className="">
             <input
-              className="border-gray-400 bg-gray-100 w-[550px] p-2 rounded-l-2xl"
+              className="border-gray-400 bg-gray-100 w-[550px] p-2 px-4 rounded-l-2xl "
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setShowHideSuggestion(true)}
+              onBlur={() => setShowHideSuggestion(false)}
             />
             <button className="bg-gray-200 p-2 rounded-r-2xl text-white cursor-pointer w-16">
               🔍
             </button>
-          </span>
+          </div>
+          {showHideSuggestion && (
+            <div className="fixed bg-white  w-[34.5rem] border-gray-600 rounded-lg">
+              <ul>
+                {suggestionResult.map((SearchRes, idx) => (
+                  <li
+                    key={idx}
+                    className="font-semibold my-1 p-1.5 px-4 hover:bg-gray-100 rounded-lg"
+                  >
+                    🔍 {SearchRes}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
         <div className="">
           <span>
