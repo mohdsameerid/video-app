@@ -5,4 +5,4 @@ export const GOOGLE_YOUTUBE_API =
   YOUTUBE_API_KEY;
 
 export const YOUTUBE_SEARCH_SUGGESTION_API =
-  "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
+  "https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
