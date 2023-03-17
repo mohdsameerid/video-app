@@ -4,6 +4,8 @@ import logo from "../assets/logo.PNG";
 import { isOpen } from "../utils/navSlice";
 import Menuoff from "../assets/MenuOff.PNG";
 import { YOUTUBE_SEARCH_SUGGESTION_API } from "../config";
+import store from "../utils/store";
+import { cacheResults } from "../utils/searchSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -17,10 +19,23 @@ const Header = () => {
   // console.log(suggestionResult);
   const [showHideSuggestion, setShowHideSuggestion] = useState(false);
 
+  const searchCache = useSelector((store) => store.search);
+
+  /**
+   * if(cache)
+   *   setSuggestionResult();
+   * else
+   *   getSearchResult();
+   *
+   */
   useEffect(() => {
     // console.log(searchQuery);
     //API call after every 500 mili sec.
-    const timer = setTimeout(() => getSearchResult(), 200);
+    const timer = setTimeout(() => {
+      if (searchCache[searchQuery])
+        setSuggestionResult(searchCache[searchQuery]);
+      else getSearchResult();
+    }, 200);
 
     return () => {
       clearTimeout(timer);
@@ -33,6 +48,13 @@ const Header = () => {
     const json = await data.json();
     // console.log(json);
     setSuggestionResult(json[1]);
+
+    // cache result in redux
+    dispatch(
+      cacheResults({
+        [searchQuery]: json[1],
+      })
+    );
   };
 
   return (
