@@ -21,7 +21,8 @@ const Header = () => {
 
   const searchCache = useSelector((store) => store.search);
 
-  /**
+  /**caching 
+   * 
    * if(cache)
    *   setSuggestionResult();
    * else
