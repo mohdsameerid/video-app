@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { closeNavbar } from "../utils/navSlice";
+import CommentContainer from "./CommentContainer";
 
 const WatchPage = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,9 @@ const WatchPage = () => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
       ></iframe>
+      <div>
+        <CommentContainer />
+      </div>
     </div>
   );
 };
