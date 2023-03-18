@@ -21,8 +21,8 @@ const Header = () => {
 
   const searchCache = useSelector((store) => store.search);
 
-  /**caching 
-   * 
+  /**caching
+   *
    * if(cache)
    *   setSuggestionResult();
    * else
@@ -86,14 +86,14 @@ const Header = () => {
         <div className="mr-52">
           <div className="">
             <input
-              className="border-gray-400 bg-gray-100 w-[550px] p-2 px-4 rounded-l-2xl "
+              className="border border-gray-300 bg-gray-100 w-[550px] p-2 px-4 rounded-l-2xl "
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setShowHideSuggestion(true)}
               onBlur={() => setShowHideSuggestion(false)}
             />
-            <button className="bg-gray-200 p-2 rounded-r-2xl text-white cursor-pointer w-16">
+            <button className="border border-gray-300 bg-gray-200 p-2 rounded-r-2xl text-white cursor-pointer w-16">
               🔍
             </button>
           </div>
