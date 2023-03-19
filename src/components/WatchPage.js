@@ -27,9 +27,14 @@ const WatchPage = () => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         ></iframe>
-        <span className="w-[386px] h-[28rem] mx-5 p-1 shadow-lg border border-gray-400 bg-slate-100 rounded-sm overflow-y-scroll flex flex-col-reverse">
-          <LiveChat />
-        </span>
+        <div className="flex flex-col">
+          <div className=" w-[386px] font-bold m-18 p-3 bg-gray-300 bg-fixed rounded-sm ml-5">
+            <h1>Live Chat</h1>
+          </div>
+          <span className="w-[386px] h-[25rem] mx-5 p-1 shadow-lg border border-gray-400 bg-slate-100 rounded-sm overflow-y-scroll flex flex-col-reverse">
+            <LiveChat />
+          </span>
+        </div>
       </div>
       {/* <div className="text-right mr-7">
         <input

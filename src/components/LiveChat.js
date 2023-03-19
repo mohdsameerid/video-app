@@ -29,9 +29,7 @@ const LiveChat = () => {
 
   return (
     <div className="w-full ">
-      <div className="font-bold m-18 p-3 bg-gray-300 bg-fixed rounded-sm">
-        <h1>Live Chat</h1>
-      </div>
+      
 
       <div>
         {message.map((e, idx) => (
