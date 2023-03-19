@@ -61,7 +61,7 @@ const Header = () => {
   return (
     <div className="">
       <div className="f m-2 p-3 flex justify-between">
-        <div className="flex ">
+        <div className="flex items-center">
           <span className="">
             {menuCondition ? (
               <img
@@ -73,7 +73,7 @@ const Header = () => {
             ) : (
               <img
                 onClick={() => hendleMenuToggle()}
-                className="h-7 mt-1 mr-0 cursor-pointer"
+                className="h-6 mt-1 mr-0 cursor-pointer"
                 alt="Hum-burger-icon"
                 src={Menuoff}
               />
