@@ -17,7 +17,7 @@ const LiveChat = () => {
       dispatch(
         addMessage({
           name: nameGenerate(),
-          message: messageGenerate(20) + "🚀",
+          message: messageGenerate(20) + " 🚀",
         })
       );
     }, 1000);
@@ -29,6 +29,10 @@ const LiveChat = () => {
 
   return (
     <div className="w-full ">
+      <div className="font-bold m-18 p-3 bg-gray-300 bg-fixed rounded-sm">
+        <h1>Live Chat</h1>
+      </div>
+
       <div>
         {message.map((e, idx) => (
           <LiveChatMessage key={idx} name={e.name} comments={e.message} />
@@ -36,7 +40,7 @@ const LiveChat = () => {
       </div>
 
       <form
-        className=" bg-fixed flex justify-center"
+        className="bg-fixed flex justify-center"
         onSubmit={(e) => {
           e.preventDefault();
           console.log("Chat Message: " + liveMessage);
