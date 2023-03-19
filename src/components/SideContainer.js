@@ -15,7 +15,9 @@ const Subscribtion = () => (
 );
 const Home = () => (
   <div className="m-2 pt-2">
-    <h1 className="font-bold">Home</h1>
+    <Link to="">
+      <h1 className="font-bold">Home</h1>
+    </Link>
     <ul>
       <li>
         <Link to="/">Home</Link>
