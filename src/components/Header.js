@@ -87,6 +87,7 @@ const Header = () => {
           <div className="">
             <input
               className="border border-gray-300 bg-gray-100 w-[550px] p-2 px-4 rounded-l-2xl "
+              placeholder="Search"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

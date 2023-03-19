@@ -6,3 +6,7 @@ export const GOOGLE_YOUTUBE_API =
 
 export const YOUTUBE_SEARCH_SUGGESTION_API =
   "https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
+
+// API polling  >>>>>>  Infinite Scroll >>>> pagination
+
+export const LIVE_MESSAGE_CHAT = 30;

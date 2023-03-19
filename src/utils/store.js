@@ -6,6 +6,7 @@
  *
  */
 import { configureStore } from "@reduxjs/toolkit";
+import chatSlice from "./chatSlice";
 import navSlice from "./navSlice";
 import searchSlice from "./searchSlice";
 
@@ -13,6 +14,7 @@ const store = configureStore({
   reducer: {
     navCard: navSlice,
     search: searchSlice,
+    chat: chatSlice,
   },
 });
 
