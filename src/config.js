@@ -5,7 +5,7 @@ export const GOOGLE_YOUTUBE_API =
   YOUTUBE_API_KEY;
 
 export const YOUTUBE_SEARCH_SUGGESTION_API =
-  "https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
+  "https://corsanywhere.herokuapp.com/https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
 
 // API polling  >>>>>>  Infinite Scroll >>>> pagination
 
