@@ -29,8 +29,6 @@ const LiveChat = () => {
 
   return (
     <div className="w-full ">
-      
-
       <div>
         {message.map((e, idx) => (
           <LiveChatMessage key={idx} name={e.name} comments={e.message} />
@@ -38,7 +36,7 @@ const LiveChat = () => {
       </div>
 
       <form
-        className="bg-fixed flex justify-center"
+        className="bg-fixed flex w-full px-2 mt-2"
         onSubmit={(e) => {
           e.preventDefault();
           console.log("Chat Message: " + liveMessage);
@@ -53,20 +51,19 @@ const LiveChat = () => {
       >
         <input
           type="text"
-          className="border border-gray-400 p-2 rounded-l-md w-[18rem]"
+          className="flex-1 border border-gray-400 p-2 rounded-l-md"
           value={liveMessage}
-          onChange={(e) => {
-            setLiveMessage(e.target.value);
-          }}
-        ></input>
-        <hr></hr>
+          onChange={(e) => setLiveMessage(e.target.value)}
+          placeholder="Type a message..."
+        />
         <button
+          type="submit"
           className="bg-red-300 p-2 rounded-r-md border border-red-400"
-          placeholder="Send"
         >
-          send
+          Send
         </button>
       </form>
+
     </div>
   );
 };
