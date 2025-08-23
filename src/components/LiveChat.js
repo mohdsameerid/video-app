@@ -63,7 +63,6 @@ const LiveChat = () => {
           Send
         </button>
       </form>
-
     </div>
   );
 };
