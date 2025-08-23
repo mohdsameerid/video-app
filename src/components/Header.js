@@ -35,7 +35,9 @@ const Header = () => {
     const timer = setTimeout(() => {
       if (searchCache[searchQuery])
         setSuggestionResult(searchCache[searchQuery]);
-      else getSearchResult();
+      else {
+        // getSearchResult();
+      }
     }, 200);
 
     return () => {
@@ -60,9 +62,10 @@ const Header = () => {
 
   return (
     <div className="">
-      <div className="f m-2 p-3 flex justify-between">
-        <div className="flex items-center">
-          <span className="">
+      <div className="flex flex-col sm:flex-row m-2 p-3 justify-between items-center">
+        {/* Left: Menu Icon + Logo */}
+        <div className="flex items-center mb-2 sm:mb-0">
+          <span>
             {menuCondition ? (
               <img
                 onClick={() => hendleMenuToggle()}
@@ -79,14 +82,16 @@ const Header = () => {
               />
             )}
           </span>
-          <span>
-            <img className="h-10" alt="Wetube" src={logo}></img>
+          <span className="ml-2">
+            <img className="h-10" alt="Wetube" src={logo} />
           </span>
         </div>
-        <div className="mr-52">
-          <div className="">
+
+        {/* Center: Search */}
+        <div className="mr-0 sm:mr-52 w-full sm:w-auto mb-2 sm:mb-0">
+          <div className="flex">
             <input
-              className="border border-gray-300 bg-gray-100 w-[550px] p-2 px-4 rounded-l-2xl "
+              className="border border-gray-300 bg-gray-100 w-full sm:w-[550px] p-2 px-4 rounded-l-2xl"
               placeholder="Search"
               type="text"
               value={searchQuery}
@@ -98,8 +103,9 @@ const Header = () => {
               🔍
             </button>
           </div>
+
           {showHideSuggestion && (
-            <div className="fixed bg-white  w-[34.5rem] border-gray-600 rounded-lg">
+            <div className="fixed bg-white w-[34.5rem] border border-gray-600 rounded-lg mt-1 z-10">
               <ul>
                 {suggestionResult.map((SearchRes, idx) => (
                   <li
@@ -113,18 +119,20 @@ const Header = () => {
             </div>
           )}
         </div>
-        <div className="">
+
+        {/* Right: User Icon */}
+        <div>
           <span>
-            {" "}
             <img
               className="h-8"
               alt="Usericon"
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTas9ZerN0eVpHSiZomHonwW3s8kjfrQy2aajkQRNWU&s"
-            ></img>
+            />
           </span>
         </div>
       </div>
     </div>
+
   );
 };
 

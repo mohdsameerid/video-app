@@ -18,7 +18,7 @@ const MainContainer = () => {
   return data.length === 0 ? (
     <ShimmerUI />
   ) : (
-    <div className="flex flex-wrap  px-5 pl-10">
+    <div className="flex flex-wrap  px-5 pl-10 gap-4">
       {data.map((videos) => (
         <Link key={videos.id} to={"/watch?v=" + videos.id}>
           <VideoCard info={videos} />

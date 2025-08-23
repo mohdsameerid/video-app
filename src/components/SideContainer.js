@@ -46,7 +46,7 @@ const SideContainer = () => {
   if (!toggleMenu) return null;
 
   return (
-    <div className="m-2 p-2 shadow-lg pr-16">
+    <div className="m-2 p-2 shadow-lg pr-16 sidebar-small-screen">
       <Home />
       <Shorts />
       <Subscribtion />
