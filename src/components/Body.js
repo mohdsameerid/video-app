@@ -1,14 +1,16 @@
 import { Outlet } from "react-router-dom";
-
 import SideContainer from "./SideContainer";
-// import ButtonList from "./ButtonList"
+
 const Body = () => {
   return (
     <div className="flex">
+      {/* Sidebar sticks below the header as the page scrolls */}
       <SideContainer />
-      {/* <ButtonList /> */}
-      <Outlet />
+      <main className="flex-1 min-w-0">
+        <Outlet />
+      </main>
     </div>
   );
 };
+
 export default Body;

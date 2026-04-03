@@ -2,137 +2,160 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.PNG";
 import { isOpen } from "../utils/navSlice";
-import Menuoff from "../assets/MenuOff.PNG";
 import { YOUTUBE_SEARCH_SUGGESTION_API } from "../config";
-import store from "../utils/store";
 import { cacheResults } from "../utils/searchSlice";
+
+const SearchIcon = ({ className = "w-5 h-5" }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+    <circle cx="11" cy="11" r="8" />
+    <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
+  </svg>
+);
 
 const Header = () => {
   const dispatch = useDispatch();
   const menuCondition = useSelector((app) => app.navCard.navbutton);
-  //   console.log("Menu condition : " + menuCondition);
-  const hendleMenuToggle = () => {
-    dispatch(isOpen());
-  };
-  const [searchQuery, setSearchQuery] = useState("");
-  const [suggestionResult, setSuggestionResult] = useState([]);
-  // console.log(suggestionResult);
-  const [showHideSuggestion, setShowHideSuggestion] = useState(false);
-
   const searchCache = useSelector((store) => store.search);
 
-  /**caching
-   *
-   * if(cache)
-   *   setSuggestionResult();
-   * else
-   *   getSearchResult();
-   *
-   */
-  useEffect(() => {
-    // console.log(searchQuery);
-    //API call after every 500 mili sec.
-    const timer = setTimeout(() => {
-      if (searchCache[searchQuery])
-        setSuggestionResult(searchCache[searchQuery]);
-      else {
-        // getSearchResult();
-      }
-    }, 200);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestionResult, setSuggestionResult] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-    return () => {
-      clearTimeout(timer);
-    };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchCache[searchQuery]) setSuggestionResult(searchCache[searchQuery]);
+    }, 200);
+    return () => clearTimeout(timer);
   }, [searchQuery]);
 
   const getSearchResult = async () => {
-    // console.log(searchQuery);
     const data = await fetch(YOUTUBE_SEARCH_SUGGESTION_API + searchQuery);
     const json = await data.json();
-    // console.log(json);
     setSuggestionResult(json[1]);
-
-    // cache result in redux
-    dispatch(
-      cacheResults({
-        [searchQuery]: json[1],
-      })
-    );
+    dispatch(cacheResults({ [searchQuery]: json[1] }));
   };
 
-  return (
-    <div className="">
-      <div className="flex flex-col sm:flex-row m-2 p-3 justify-between items-center">
-        {/* Left: Menu Icon + Logo */}
-        <div className="flex items-center mb-2 sm:mb-0">
-          <span>
-            {menuCondition ? (
-              <img
-                onClick={() => hendleMenuToggle()}
-                className="h-10 mr-0 cursor-pointer"
-                alt="Hum-burger-icon"
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAARVBMVEX///8jHyAgHB0OBQgMAAWlpKQpJSaenZ309PUAAAAIAAD8/Pz5+fna2tqop6dvbW1oZmevrq4tKivFxMQYExRiYGC+vr7Dc4WrAAABB0lEQVR4nO3cS3LCMBAFQGIIIBPbhN/9jxqSyiIsTUnlydB9g1eSNV5MvdUKAAAAAAAAAAAAAAAAXtEwvscwDk3yHabSb2Loy/TRIOHUv8XRH+sHHMrSqR6U+hd1jHSE90P8lHC2/Lc0/0vzMy3WMdynxaFBwu+Jv4uh0cQHAAAAAAAAAIB59jG0ijdcT9sYTtcmK0PncumiuJRz/YD7bbf0ut4f3br+GvQt2PblrXrC3WbpUA/6sXrC/GeY/zvM/5aGmofHZiu0S//M/GoVDwAAAAAAAAAAZsjeuRerN1HL7hPy95fm76DNnzD/Lc3/0rxAJ3v+Xn0AAAAAAAAAAAAAAAD4T74AYhs1O+vt3ioAAAAASUVORK5CYII="
-              />
-            ) : (
-              <img
-                onClick={() => hendleMenuToggle()}
-                className="h-6 mt-1 mr-0 cursor-pointer"
-                alt="Hum-burger-icon"
-                src={Menuoff}
-              />
-            )}
-          </span>
-          <span className="ml-2">
-            <img className="h-10" alt="Wetube" src={logo} />
-          </span>
-        </div>
-
-        {/* Center: Search */}
-        <div className="mr-0 sm:mr-52 w-full sm:w-auto mb-2 sm:mb-0">
-          <div className="flex">
-            <input
-              className="border border-gray-300 bg-gray-100 w-full sm:w-[550px] p-2 px-4 rounded-l-2xl"
-              placeholder="Search"
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => setShowHideSuggestion(true)}
-              onBlur={() => setShowHideSuggestion(false)}
-            />
-            <button className="border border-gray-300 bg-gray-200 p-2 rounded-r-2xl text-white cursor-pointer w-16">
-              🔍
-            </button>
-          </div>
-
-          {showHideSuggestion && (
-            <div className="fixed bg-white w-[34.5rem] border border-gray-600 rounded-lg mt-1 z-10">
-              <ul>
-                {suggestionResult.map((SearchRes, idx) => (
-                  <li
-                    key={idx}
-                    className="font-semibold my-1 p-1.5 px-4 hover:bg-gray-100 rounded-lg"
-                  >
-                    🔍 {SearchRes}
-                  </li>
-                ))}
-              </ul>
+  /* ── Mobile search overlay ── */
+  if (mobileSearchOpen) {
+    return (
+      <header className="sticky top-0 z-50 flex items-center h-14 px-3 bg-white border-b border-gray-200 gap-2">
+        <button onClick={() => setMobileSearchOpen(false)} className="p-2 rounded-full hover:bg-gray-100">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m7-7l-7 7 7 7" />
+          </svg>
+        </button>
+        <div className="flex flex-1 relative">
+          <input
+            autoFocus
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            onKeyDown={(e) => e.key === "Enter" && getSearchResult()}
+            placeholder="Search YouTube"
+            className="flex-1 border border-gray-300 border-r-0 rounded-l-full px-4 py-2 text-sm bg-white focus:outline-none focus:border-blue-500"
+          />
+          <button onClick={getSearchResult} className="border border-gray-300 bg-gray-50 px-4 rounded-r-full flex items-center">
+            <SearchIcon />
+          </button>
+          {showSuggestions && suggestionResult.length > 0 && (
+            <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-lg mt-1 z-50 py-2">
+              {suggestionResult.map((item, idx) => (
+                <div key={idx} onMouseDown={() => setSearchQuery(item)}
+                  className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                  <SearchIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  {item}
+                </div>
+              ))}
             </div>
           )}
         </div>
+      </header>
+    );
+  }
 
-        {/* Right: User Icon */}
-        <div>
-          <span>
-            <img
-              className="h-8"
-              alt="Usericon"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTas9ZerN0eVpHSiZomHonwW3s8kjfrQy2aajkQRNWU&s"
-            />
-          </span>
-        </div>
+  return (
+    <header className="sticky top-0 z-50 flex items-center justify-between h-14 px-3 sm:px-4 bg-white border-b border-gray-200">
+
+      {/* Left — Hamburger + Logo */}
+      <div className="flex items-center gap-2 sm:gap-4">
+        <button onClick={() => dispatch(isOpen())} className="p-2 rounded-full hover:bg-gray-100">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <img src={logo} alt="WeTube" className="h-6 sm:h-7" />
       </div>
-    </div>
 
+      {/* Center — Search bar (hidden on mobile) */}
+      <div className="hidden sm:flex items-center flex-1 max-w-[600px] mx-4 relative">
+        <div className="flex w-full">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            onKeyDown={(e) => e.key === "Enter" && getSearchResult()}
+            placeholder="Search"
+            className="flex-1 border border-gray-300 border-r-0 rounded-l-full px-5 py-2 text-sm bg-white focus:outline-none focus:border-blue-500"
+          />
+          <button onClick={getSearchResult}
+            className="border border-gray-300 bg-gray-50 hover:bg-gray-100 px-5 rounded-r-full flex items-center justify-center">
+            <SearchIcon />
+          </button>
+        </div>
+        {/* Voice */}
+        <button className="ml-2 p-2 rounded-full bg-gray-100 hover:bg-gray-200 flex-shrink-0 hidden md:flex items-center">
+          <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+          </svg>
+        </button>
+        {/* Suggestions */}
+        {showSuggestions && suggestionResult.length > 0 && (
+          <div className="absolute top-full left-0 right-12 bg-white border border-gray-200 rounded-xl shadow-lg mt-1 z-50 py-2">
+            {suggestionResult.map((item, idx) => (
+              <div key={idx} onMouseDown={() => setSearchQuery(item)}
+                className="flex items-center gap-4 px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                <SearchIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                {item}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Right — icons */}
+      <div className="flex items-center gap-1">
+        {/* Mobile: search icon */}
+        <button onClick={() => setMobileSearchOpen(true)} className="sm:hidden p-2 rounded-full hover:bg-gray-100">
+          <SearchIcon className="w-5 h-5 text-gray-700" />
+        </button>
+
+        {/* Create — text hidden on mobile */}
+        <button className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-gray-100 text-sm font-medium text-gray-700">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <span className="hidden md:inline">Create</span>
+        </button>
+
+        {/* Notifications */}
+        <button className="p-2 rounded-full hover:bg-gray-100">
+          <svg className="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+          </svg>
+        </button>
+
+        {/* Avatar */}
+        <button className="ml-1">
+          <img className="h-8 w-8 rounded-full object-cover" alt="User"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTas9ZerN0eVpHSiZomHonwW3s8kjfrQy2aajkQRNWU&s" />
+        </button>
+      </div>
+    </header>
   );
 };
 

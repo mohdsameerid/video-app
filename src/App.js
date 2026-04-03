@@ -1,6 +1,5 @@
 import Header from "./components/Header";
 import Body from "./components/Body";
-import Footer from "./components/Footer";
 import store from "./utils/store";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -12,14 +11,8 @@ const appRouter = createBrowserRouter([
     path: "/",
     element: <Body />,
     children: [
-      {
-        path: "/",
-        element: <MainContainer />,
-      },
-      {
-        path: "watch",
-        element: <WatchPage />,
-      },
+      { path: "/", element: <MainContainer /> },
+      { path: "watch", element: <WatchPage /> },
     ],
   },
 ]);
@@ -27,9 +20,9 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <Provider store={store}>
+      {/* Header is sticky — sticks to top as page scrolls */}
       <Header />
       <RouterProvider router={appRouter} />
-      <Footer />
     </Provider>
   );
 }
