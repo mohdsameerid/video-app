@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { isOpen as isOpenAction } from "../utils/navSlice";
+import logo from "../assets/logo.PNG";
 
 const Icon = ({ d }) => (
   <svg className="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -95,15 +96,15 @@ const SideContainer = () => {
             onClick={() => dispatch(isOpenAction())}
           />
           {/* Drawer */}
-          <aside className="fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-xl overflow-y-auto py-3 px-2">
+          <aside className="slide-in-left fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-xl overflow-y-auto px-2">
             {/* Logo row inside drawer */}
-            <div className="flex items-center gap-3 px-3 mb-3 h-14">
-              <button onClick={() => dispatch(isOpenAction())} className="p-1 rounded-full hover:bg-gray-100">
+            <div className="flex items-center gap-2 px-1 h-14">
+              <button onClick={() => dispatch(isOpenAction())} className="p-2 rounded-full hover:bg-gray-100">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <span className="font-bold text-lg">WeTube</span>
+              <img src={logo} alt="WeTube" className="h-6" />
             </div>
             {fullSidebarContent}
           </aside>
