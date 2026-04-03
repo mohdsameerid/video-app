@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const navSlice = createSlice({
   name: "nav",
   initialState: {
-    navbutton: true,
+    navbutton: window.innerWidth >= 640,
   },
   reducers: {
     isOpen: (state) => {
