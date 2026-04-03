@@ -3,18 +3,22 @@ import { createSlice } from "@reduxjs/toolkit";
 const videosSlice = createSlice({
   name: "videos",
   initialState: {
-    items: [],
-    nextPageToken: null,
+    // { [category]: { items: [], nextPageToken: null } }
+    byCategory: {},
     isFetching: false,
   },
   reducers: {
     setVideos: (state, action) => {
-      state.items = action.payload.items;
-      state.nextPageToken = action.payload.nextPageToken || null;
+      const { category, items, nextPageToken } = action.payload;
+      state.byCategory[category] = { items, nextPageToken: nextPageToken || null };
     },
     appendVideos: (state, action) => {
-      state.items = [...state.items, ...action.payload.items];
-      state.nextPageToken = action.payload.nextPageToken || null;
+      const { category, items, nextPageToken } = action.payload;
+      const existing = state.byCategory[category]?.items || [];
+      state.byCategory[category] = {
+        items: [...existing, ...items],
+        nextPageToken: nextPageToken || null,
+      };
     },
     setFetching: (state, action) => {
       state.isFetching = action.payload;

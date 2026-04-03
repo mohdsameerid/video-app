@@ -6,12 +6,26 @@ import { setVideos, appendVideos, setFetching } from "../utils/videosSlice";
 import VideoCard from "./VideoCard";
 import ShimmerUI from "./ShimmerUI";
 
-const CATEGORIES = [
-  "All", "Mixes", "Podcasts", "Live", "Music", "Gaming",
-  "News", "Cooking", "Sports", "Technology", "Fashion", "Travel", "Comedy", "Learning",
-];
+// YouTube category IDs — null means no filter (use mostPopular)
+const CATEGORY_MAP = {
+  "All":        "",
+  "Music":      "10",
+  "Gaming":     "20",
+  "News":       "25",
+  "Sports":     "17",
+  "Technology": "28",
+  "Comedy":     "23",
+  "Film":       "1",
+  "Cooking":    "26",
+  "Fashion":    "26",
+  "Autos":      "2",
+  "Mixes":      "",
+  "Podcasts":   "",
+  "Live":       "",
+};
 
-// Shimmer cards shown while loading next page
+const CATEGORIES = Object.keys(CATEGORY_MAP);
+
 const BottomShimmer = () => (
   <div className="col-span-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-6 sm:gap-x-4 sm:gap-y-8">
     {Array(4).fill("").map((_, i) => (
@@ -32,64 +46,71 @@ const BottomShimmer = () => (
 
 const MainContainer = () => {
   const dispatch = useDispatch();
-  const data = useSelector((store) => store.videos.items);
-  const nextPageToken = useSelector((store) => store.videos.nextPageToken);
+  const byCategory = useSelector((store) => store.videos.byCategory);
   const isFetching = useSelector((store) => store.videos.isFetching);
 
   const [activeCategory, setActiveCategory] = useState("All");
   const sentinelRef = useRef(null);
 
-  // Initial fetch — only if nothing cached
-  useEffect(() => {
-    if (data.length === 0) {
-      fetchVideos();
-    }
-  }, []);
+  const currentData     = byCategory[activeCategory]?.items || [];
+  const nextPageToken   = byCategory[activeCategory]?.nextPageToken || null;
+  const isInitialLoad   = currentData.length === 0 && isFetching;
 
-  const fetchVideos = async (pageToken = "") => {
+  // Fetch when category changes — skip if already cached
+  useEffect(() => {
+    if (!byCategory[activeCategory]) {
+      fetchVideos(activeCategory);
+    }
+  }, [activeCategory]);
+
+  const fetchVideos = async (category, pageToken = "") => {
     dispatch(setFetching(true));
-    const res = await fetch(GOOGLE_YOUTUBE_API(pageToken));
-    const json = await res.json();
-    if (pageToken) {
-      dispatch(appendVideos({ items: json.items, nextPageToken: json.nextPageToken }));
-    } else {
-      dispatch(setVideos({ items: json.items, nextPageToken: json.nextPageToken }));
+    try {
+      const res  = await fetch(GOOGLE_YOUTUBE_API(CATEGORY_MAP[category], pageToken));
+      const json = await res.json();
+
+      // API returned an error — don't cache so user can retry
+      if (json.error || !json.items) {
+        dispatch(setFetching(false));
+        return;
+      }
+
+      if (pageToken) {
+        dispatch(appendVideos({ category, items: json.items, nextPageToken: json.nextPageToken }));
+      } else {
+        dispatch(setVideos({ category, items: json.items, nextPageToken: json.nextPageToken }));
+      }
+    } catch {
+      // network error — don't cache
     }
     dispatch(setFetching(false));
   };
 
-  // Intersection Observer — triggers when sentinel div enters viewport
+  // Infinite scroll sentinel
   useEffect(() => {
     if (!sentinelRef.current) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && nextPageToken && !isFetching) {
-          fetchVideos(nextPageToken);
+          fetchVideos(activeCategory, nextPageToken);
         }
       },
-      { rootMargin: "200px" } // start loading 200px before reaching the bottom
+      { rootMargin: "200px" }
     );
-
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
-  }, [nextPageToken, isFetching]);
+  }, [activeCategory, nextPageToken, isFetching]);
 
-  if (data.length === 0) return (
-    <div>
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
-        <div className="flex gap-3 px-4 py-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-          {CATEGORIES.map((cat) => (
-            <button key={cat}
-              className="flex-shrink-0 px-3 py-1 rounded-lg text-sm font-medium bg-gray-100 text-gray-800">
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
-      <ShimmerUI />
-    </div>
-  );
+  const handleCategoryClick = (cat) => {
+    setActiveCategory(cat);
+  };
+
+  const chipClass = (cat) =>
+    `flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+      activeCategory === cat
+        ? "bg-gray-900 text-white"
+        : "bg-gray-100 text-gray-800 hover:bg-gray-200 active:bg-gray-300"
+    }`;
 
   return (
     <div>
@@ -97,34 +118,43 @@ const MainContainer = () => {
       <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
         <div className="flex gap-3 px-4 py-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
           {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`flex-shrink-0 px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                activeCategory === cat
-                  ? "bg-gray-900 text-white"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-              }`}
-            >
+            <button key={cat} onClick={() => handleCategoryClick(cat)} className={chipClass(cat)}>
               {cat}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Video grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-6 sm:gap-x-4 sm:gap-y-8 px-3 py-4 sm:px-4 sm:py-6">
-        {data.map((video) => (
-          <Link key={video.id} to={"/watch?v=" + video.id}>
-            <VideoCard info={video} />
-          </Link>
-        ))}
+      {/* Initial load shimmer */}
+      {isInitialLoad ? (
+        <ShimmerUI />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-6 sm:gap-x-4 sm:gap-y-8 px-3 py-4 sm:px-4 sm:py-6">
+          {currentData.length > 0 ? (
+            currentData.map((video) => (
+              <Link key={video.id} to={"/watch?v=" + video.id}>
+                <VideoCard info={video} />
+              </Link>
+            ))
+          ) : (
+            !isFetching && (
+              <div className="col-span-full flex flex-col items-center py-20 gap-3">
+                <p className="text-gray-400 text-sm">No videos found for this category.</p>
+                <button
+                  onClick={() => fetchVideos(activeCategory)}
+                  className="px-4 py-1.5 rounded-full bg-gray-100 text-sm font-medium hover:bg-gray-200"
+                >
+                  Retry
+                </button>
+              </div>
+            )
+          )}
 
-        {/* Loading shimmer for next page */}
-        {isFetching && <BottomShimmer />}
-      </div>
+          {/* Next page shimmer */}
+          {isFetching && currentData.length > 0 && <BottomShimmer />}
+        </div>
+      )}
 
-      {/* Sentinel — observed to trigger next page fetch */}
       <div ref={sentinelRef} className="h-4" />
     </div>
   );
