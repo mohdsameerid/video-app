@@ -31,7 +31,7 @@ const FullNavItem = ({ iconKey, label, to = "/" }) => {
   return (
     <Link to={to}>
       <div className={`flex items-center gap-6 px-3 h-10 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
-        active ? "bg-gray-100 font-semibold" : "hover:bg-gray-100 text-gray-700"
+        active ? "bg-gray-100 dark:bg-[#3f3f3f] font-semibold" : "hover:bg-gray-100 dark:hover:bg-[#3f3f3f] text-gray-700 dark:text-[#f1f1f1]"
       }`}>
         <Icon d={ICONS[iconKey]} />
         <span className="truncate">{label}</span>
@@ -46,7 +46,7 @@ const MiniNavItem = ({ iconKey, label, to = "/" }) => {
   return (
     <Link to={to}>
       <div className={`flex flex-col items-center justify-center gap-1 w-full py-3 rounded-xl cursor-pointer transition-colors ${
-        active ? "bg-gray-100 font-semibold" : "hover:bg-gray-100 text-gray-700"
+        active ? "bg-gray-100 dark:bg-[#3f3f3f] font-semibold" : "hover:bg-gray-100 dark:hover:bg-[#3f3f3f] text-gray-700 dark:text-[#f1f1f1]"
       }`}>
         <Icon d={ICONS[iconKey]} />
         <span className="text-[10px] font-medium leading-tight text-center">{label}</span>
@@ -55,9 +55,9 @@ const MiniNavItem = ({ iconKey, label, to = "/" }) => {
   );
 };
 
-const Divider = () => <hr className="my-3 border-gray-200" />;
+const Divider = () => <hr className="my-3 border-gray-200 dark:border-[#3f3f3f]" />;
 const SectionLabel = ({ label }) => (
-  <p className="px-3 pt-2 pb-1 text-sm font-semibold text-gray-900">{label}</p>
+  <p className="px-3 pt-2 pb-1 text-sm font-semibold text-gray-900 dark:text-[#f1f1f1]">{label}</p>
 );
 
 const SideContainer = () => {
@@ -96,7 +96,7 @@ const SideContainer = () => {
             onClick={() => dispatch(isOpenAction())}
           />
           {/* Drawer */}
-          <aside className="slide-in-left fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-xl overflow-y-auto px-2">
+          <aside className="slide-in-left fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-[#212121] shadow-xl overflow-y-auto px-2">
             {/* Logo row inside drawer */}
             <div className="flex items-center gap-2 px-1 h-14">
               <button onClick={() => dispatch(isOpenAction())} className="p-2 rounded-full hover:bg-gray-100">
@@ -113,7 +113,7 @@ const SideContainer = () => {
 
       {/* ── DESKTOP mini sidebar (sm+, closed state) ── */}
       {!isMenuOpen && (
-        <aside className="hidden sm:flex flex-col w-[72px] flex-shrink-0 sticky top-14 self-start h-[calc(100vh-56px)] overflow-y-auto py-2 px-1 bg-white border-r border-gray-100">
+        <aside className="hidden sm:flex flex-col w-[72px] flex-shrink-0 sticky top-14 self-start h-[calc(100vh-56px)] overflow-y-auto py-2 px-1 bg-white dark:bg-[#212121] border-r border-gray-100 dark:border-[#3f3f3f]">
           <MiniNavItem iconKey="home"    label="Home"          to="/" />
           <MiniNavItem iconKey="shorts"  label="Shorts"        to="/" />
           <MiniNavItem iconKey="subs"    label="Subscriptions" to="/" />
@@ -124,7 +124,7 @@ const SideContainer = () => {
 
       {/* ── DESKTOP full sidebar (sm+, open state) ── */}
       {isMenuOpen && (
-        <aside className="hidden sm:flex flex-col w-60 flex-shrink-0 sticky top-14 self-start h-[calc(100vh-56px)] overflow-y-auto py-3 px-2 bg-white border-r border-gray-100">
+        <aside className="hidden sm:flex flex-col w-60 flex-shrink-0 sticky top-14 self-start h-[calc(100vh-56px)] overflow-y-auto py-3 px-2 bg-white dark:bg-[#212121] border-r border-gray-100 dark:border-[#3f3f3f]">
           {fullSidebarContent}
         </aside>
       )}

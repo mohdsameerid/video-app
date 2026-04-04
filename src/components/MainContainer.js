@@ -108,14 +108,14 @@ const MainContainer = () => {
   const chipClass = (cat) =>
     `flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
       activeCategory === cat
-        ? "bg-gray-900 text-white"
-        : "bg-gray-100 text-gray-800 hover:bg-gray-200 active:bg-gray-300"
+        ? "bg-gray-900 dark:bg-[#f1f1f1] text-white dark:text-[#0f0f0f]"
+        : "bg-gray-100 dark:bg-[#272727] text-gray-800 dark:text-[#f1f1f1] hover:bg-gray-200 dark:hover:bg-[#3f3f3f]"
     }`;
 
   return (
     <div>
       {/* Category chips */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
+      <div className="sticky top-0 z-10 bg-white dark:bg-[#0f0f0f] border-b border-gray-200 dark:border-[#3f3f3f]">
         <div className="flex gap-3 px-4 py-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
           {CATEGORIES.map((cat) => (
             <button key={cat} onClick={() => handleCategoryClick(cat)} className={chipClass(cat)}>
@@ -139,10 +139,10 @@ const MainContainer = () => {
           ) : (
             !isFetching && (
               <div className="col-span-full flex flex-col items-center py-20 gap-3">
-                <p className="text-gray-400 text-sm">No videos found for this category.</p>
+                <p className="text-gray-400 dark:text-gray-500 text-sm">No videos found for this category.</p>
                 <button
                   onClick={() => fetchVideos(activeCategory)}
-                  className="px-4 py-1.5 rounded-full bg-gray-100 text-sm font-medium hover:bg-gray-200"
+                  className="px-4 py-1.5 rounded-full bg-gray-100 dark:bg-[#272727] dark:text-[#f1f1f1] text-sm font-medium hover:bg-gray-200 dark:hover:bg-[#3f3f3f]"
                 >
                   Retry
                 </button>

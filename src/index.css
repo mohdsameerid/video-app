@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html.dark {
+  background-color: #0f0f0f;
+  color-scheme: dark;
+}
+
 @keyframes slideInLeft {
   from { transform: translateX(-100%); }
   to   { transform: translateX(0); }
@@ -21,12 +26,13 @@
 }
 
 .shimmer-bg {
-  background: linear-gradient(
-    90deg,
-    #f0f0f0 25%,
-    #e8e8e8 37%,
-    #f0f0f0 63%
-  );
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 37%, #f0f0f0 63%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.dark .shimmer-bg {
+  background: linear-gradient(90deg, #272727 25%, #3f3f3f 37%, #272727 63%);
   background-size: 800px 100%;
   animation: shimmer 1.4s infinite linear;
 }
