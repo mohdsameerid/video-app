@@ -27,7 +27,7 @@ const ICONS = {
 
 const FullNavItem = ({ iconKey, label, to = "/" }) => {
   const location = useLocation();
-  const active = location.pathname === to && label === "Home";
+  const active = location.pathname === to;
   return (
     <Link to={to}>
       <div className={`flex items-center gap-6 px-3 h-10 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
@@ -42,7 +42,7 @@ const FullNavItem = ({ iconKey, label, to = "/" }) => {
 
 const MiniNavItem = ({ iconKey, label, to = "/" }) => {
   const location = useLocation();
-  const active = location.pathname === to && label === "Home";
+  const active = location.pathname === to;
   return (
     <Link to={to}>
       <div className={`flex flex-col items-center justify-center gap-1 w-full py-3 rounded-xl cursor-pointer transition-colors ${
@@ -67,7 +67,7 @@ const SideContainer = () => {
   const fullSidebarContent = (
     <>
       <FullNavItem iconKey="home"        label="Home"          to="/" />
-      <FullNavItem iconKey="shorts"      label="Shorts"        to="/" />
+      <FullNavItem iconKey="shorts"      label="Shorts"        to="/shorts" />
       <FullNavItem iconKey="subs"        label="Subscriptions" to="/" />
       <Divider />
       <SectionLabel label="You" />
@@ -115,7 +115,7 @@ const SideContainer = () => {
       {!isMenuOpen && (
         <aside className="hidden sm:flex flex-col w-[72px] flex-shrink-0 sticky top-14 self-start h-[calc(100vh-56px)] overflow-y-auto py-2 px-1 bg-white dark:bg-[#212121] border-r border-gray-100 dark:border-[#3f3f3f]">
           <MiniNavItem iconKey="home"    label="Home"          to="/" />
-          <MiniNavItem iconKey="shorts"  label="Shorts"        to="/" />
+          <MiniNavItem iconKey="shorts"  label="Shorts"        to="/shorts" />
           <MiniNavItem iconKey="subs"    label="Subscriptions" to="/" />
           <MiniNavItem iconKey="history" label="History"       to="/" />
           <MiniNavItem iconKey="liked"   label="Liked"         to="/" />
