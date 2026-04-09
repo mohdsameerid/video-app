@@ -9,6 +9,9 @@ export const YOUTUBE_SHORTS_API = (pageToken = "") =>
 export const YOUTUBE_SEARCH_SUGGESTION_API =
   "https://corsanywhere.herokuapp.com/https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
 
+export const YOUTUBE_VIDEO_DETAILS_API = (videoId) =>
+  `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${YOUTUBE_API_KEY}`;
+
 // API polling  >>>>>>  Infinite Scroll >>>> pagination
 
 export const LIVE_MESSAGE_CHAT = 30;
