@@ -68,20 +68,20 @@ const SideContainer = () => {
     <>
       <FullNavItem iconKey="home"        label="Home"          to="/" />
       <FullNavItem iconKey="shorts"      label="Shorts"        to="/shorts" />
-      <FullNavItem iconKey="subs"        label="Subscriptions" to="/" />
+      <FullNavItem iconKey="subs"        label="Subscriptions" to="/subscriptions" />
       <Divider />
       <SectionLabel label="You" />
-      <FullNavItem iconKey="history"     label="History"       to="/" />
-      <FullNavItem iconKey="playlist"    label="Playlists"     to="/" />
-      <FullNavItem iconKey="watchlater"  label="Watch later"   to="/" />
-      <FullNavItem iconKey="liked"       label="Liked videos"  to="/" />
+      <FullNavItem iconKey="history"     label="History"       to="/history" />
+      <FullNavItem iconKey="playlist"    label="Playlists"     to="/playlists" />
+      <FullNavItem iconKey="watchlater"  label="Watch later"   to="/watch-later" />
+      <FullNavItem iconKey="liked"       label="Liked videos"  to="/liked" />
       <Divider />
       <SectionLabel label="Explore" />
-      <FullNavItem iconKey="trending"    label="Trending"      to="/" />
-      <FullNavItem iconKey="music"       label="Music"         to="/" />
-      <FullNavItem iconKey="gaming"      label="Gaming"        to="/" />
-      <FullNavItem iconKey="news"        label="News"          to="/" />
-      <FullNavItem iconKey="sports"      label="Sports"        to="/" />
+      <FullNavItem iconKey="trending"    label="Trending"      to="/trending" />
+      <FullNavItem iconKey="music"       label="Music"         to="/music" />
+      <FullNavItem iconKey="gaming"      label="Gaming"        to="/gaming" />
+      <FullNavItem iconKey="news"        label="News"          to="/news" />
+      <FullNavItem iconKey="sports"      label="Sports"        to="/sports" />
     </>
   );
 
@@ -116,9 +116,9 @@ const SideContainer = () => {
         <aside className="hidden sm:flex flex-col w-[72px] flex-shrink-0 sticky top-14 self-start h-[calc(100vh-56px)] overflow-y-auto py-2 px-1 bg-white dark:bg-[#212121] border-r border-gray-100 dark:border-[#3f3f3f]">
           <MiniNavItem iconKey="home"    label="Home"          to="/" />
           <MiniNavItem iconKey="shorts"  label="Shorts"        to="/shorts" />
-          <MiniNavItem iconKey="subs"    label="Subscriptions" to="/" />
-          <MiniNavItem iconKey="history" label="History"       to="/" />
-          <MiniNavItem iconKey="liked"   label="Liked"         to="/" />
+          <MiniNavItem iconKey="subs"    label="Subscriptions" to="/subscriptions" />
+          <MiniNavItem iconKey="history" label="History"       to="/history" />
+          <MiniNavItem iconKey="liked"   label="Liked"         to="/liked" />
         </aside>
       )}
 

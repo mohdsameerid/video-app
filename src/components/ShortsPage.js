@@ -67,7 +67,7 @@ const ShortSlide = ({ item }) => {
   return (
     <div
       ref={slideRef}
-      className="relative flex items-center justify-center bg-black flex-shrink-0"
+      className="relative flex items-center justify-center bg-white dark:bg-[#0f0f0f] flex-shrink-0"
       style={{ height: "calc(100vh - 56px)", scrollSnapAlign: "start" }}
     >
       {/* Portrait card */}
@@ -171,7 +171,7 @@ const ShortSlide = ({ item }) => {
 /* ── Loading shimmer slide ── */
 const ShimmerSlide = () => (
   <div
-    className="flex items-center justify-center bg-black flex-shrink-0"
+    className="flex items-center justify-center bg-white dark:bg-[#0f0f0f] flex-shrink-0"
     style={{ height: "calc(100vh - 56px)", scrollSnapAlign: "start" }}
   >
     <div className="relative h-full max-w-[420px] w-full animate-pulse">
@@ -225,7 +225,7 @@ const ShortsPage = () => {
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="bg-black"
+      className="bg-white dark:bg-[#0f0f0f]"
       style={{
         height: "calc(100vh - 56px)",
         overflowY: "scroll",
